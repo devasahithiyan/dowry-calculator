@@ -4,111 +4,242 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dowry Calculator</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * {
             box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
             margin: 0;
             padding: 0;
         }
 
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(-45deg, #1e1e1e, #2e2e2e, #1e1e1e, #2e2e2e);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         .container {
-            max-width: 600px;
-            margin: 50px auto;
-            background: #fff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 700px;
+            width: 100%;
+            background: rgba(46, 46, 46, 0.95);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(0, 255, 234, 0.5);
+            position: relative;
+            overflow: hidden;
         }
         
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5em;
+            color: #00ffee;
+            /* Removed text-shadow to eliminate glowing effect */
+        }
+
         .tabs {
             display: flex;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #ccc;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #555;
         }
 
         .tab {
             flex: 1;
             text-align: center;
-            padding: 10px;
+            padding: 15px;
             cursor: pointer;
             font-weight: bold;
-            background-color: #f9f9f9;
-            border: 1px solid #ccc;
+            background-color: #3a3a3a;
+            border: 1px solid #555;
             border-bottom: none;
-            transition: background-color 0.3s, color 0.3s;
+            transition: background-color 0.3s, color 0.3s, transform 0.3s;
+            position: relative;
+        }
+
+        .tab::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: transparent;
+            transition: background-color 0.3s;
         }
 
         .tab.active {
-            background-color: #fff;
-            border-top: 2px solid #28a745;
-            border-right: 2px solid #ccc;
-            border-left: 2px solid #ccc;
+            background-color: #1e1e1e;
+            color: #00ffea;
+            border-top: 2px solid #00ffea;
+            border-right: 2px solid #555;
+            border-left: 2px solid #555;
             border-bottom: none;
-            color: #28a745;
+            transform: translateY(-2px);
+        }
+
+        .tab.active::after {
+            background-color: #00ffea;
+        }
+
+        .tab:hover {
+            background-color: #555;
+            transform: translateY(-1px);
         }
 
         .tab-content {
             display: none;
+            animation: fadeIn 0.5s ease-in-out;
         }
 
         .tab-content.active {
             display: block;
         }
 
-        h1 {
-            text-align: center;
-            margin-bottom: 30px;
-            color: #28a745;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .form-group {
             margin-bottom: 20px;
+            position: relative;
         }
 
         label {
             display: block;
             margin-bottom: 8px;
             font-weight: bold;
+            color: #ffffff;
+            font-size: 1em;
         }
 
         input[type="number"],
         input[type="text"],
         select {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            padding: 12px 15px;
+            border: 1px solid #555;
+            border-radius: 8px;
+            background-color: #3a3a3a;
+            color: #ffffff;
+            font-size: 1em;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        input[type="number"]:focus,
+        input[type="text"]:focus,
+        select:focus {
+            border-color: #00ffea;
+            box-shadow: 0 0 10px #00ffea;
+            outline: none;
+        }
+
+        input[type="number"]::placeholder,
+        input[type="text"]::placeholder {
+            color: #aaaaaa;
         }
 
         button {
             width: 100%;
-            padding: 12px;
-            background-color: #28a745;
+            padding: 15px;
+            background-color: #00ffea;
             border: none;
-            color: #fff;
-            font-size: 16px;
-            border-radius: 4px;
+            color: #1e1e1e;
+            font-size: 1.1em;
+            border-radius: 8px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, transform 0.3s;
+            font-weight: bold;
         }
 
         button:hover {
-            background-color: #218838;
+            background-color: #00cfd1;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 255, 234, 0.5);
         }
 
         .result {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #e9ecef;
-            border-radius: 4px;
+            margin-top: 25px;
+            padding: 20px;
+            background-color: rgba(0, 255, 234, 0.1);
+            border-left: 5px solid #00ffea;
+            border-radius: 8px;
             text-align: center;
-            font-size: 18px;
+            font-size: 1.2em;
             display: none;
+            animation: fadeInResult 0.5s ease-in-out;
+        }
+
+        @keyframes fadeInResult {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Loader Overlay Styling */
+        .loader-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(30, 30, 30, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            z-index: 10;
+            flex-direction: column;
+            color: #00ffea;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Progress Bar Styling */
+        .progress-container {
+            width: 80%;
+            background-color: #555;
+            border-radius: 25px;
+            overflow: hidden;
+            margin-top: 20px;
+            height: 20px;
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #00ffea, #00cfd1);
+            box-shadow: 0 0 10px #00ffea, 0 0 20px #00ffea, 0 0 30px #00ffea;
+            border-radius: 25px;
+            animation: progress 5s forwards; /* Updated to 5 seconds */
+        }
+
+        @keyframes progress {
+            from { width: 0%; }
+            to { width: 100%; }
+        }
+
+        .loader-message {
+            margin-top: 15px;
+            font-size: 1em;
+            min-height: 24px;
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 5px #00ffea;
         }
 
         @media (max-width: 600px) {
@@ -123,26 +254,36 @@
 
             .tab {
                 border-right: none;
-                border-bottom: 2px solid #ccc;
+                border-bottom: 2px solid #444;
             }
 
             .tab.active {
-                border-bottom: 2px solid #28a745;
+                border-bottom: 2px solid #00ffea;
                 border-right: none;
             }
 
             h1 {
-                font-size: 24px;
+                font-size: 2em;
             }
 
             button {
-                font-size: 14px;
-                padding: 10px;
+                font-size: 1em;
+                padding: 12px;
             }
 
             .result {
-                font-size: 16px;
-                padding: 10px;
+                font-size: 1em;
+                padding: 15px;
+            }
+
+            .progress-container {
+                width: 90%;
+                height: 15px;
+            }
+
+            .loader-message {
+                font-size: 0.9em;
+                margin-top: 10px;
             }
         }
     </style>
@@ -153,6 +294,14 @@
         <div class="tabs">
             <div class="tab active" data-tab="men">For Men</div>
             <div class="tab" data-tab="women">For Women</div>
+        </div>
+
+        <!-- Loader Overlay -->
+        <div class="loader-overlay" id="loader">
+            <div class="loader-message" id="loader-message">Initializing Systems...</div>
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
         </div>
 
         <div id="men" class="tab-content active">
@@ -264,21 +413,38 @@
       import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
       import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
       
+      // Your Firebase configuration
       const firebaseConfig = {
         apiKey: "AIzaSyCcu7F9z0uxWkea42oJSJ0JGnJEQIo70To",
         authDomain: "dowry-calculator-7beba.firebaseapp.com",
         projectId: "dowry-calculator-7beba",
-        storageBucket: "dowry-calculator-7beba.appspot.com",
+        storageBucket: "dowry-calculator-7beba.firebasestorage.app",
         messagingSenderId: "693661535668",
         appId: "1:693661535668:web:5b85740abaf1a1a46636e1"
       };
     
+      // Initialize Firebase
       const app = initializeApp(firebaseConfig);
       const db = getFirestore(app);
 
       const tabs = document.querySelectorAll('.tab');
       const tabContents = document.querySelectorAll('.tab-content');
+      const loader = document.getElementById('loader');
+      const loaderMessage = document.getElementById('loader-message');
+      const progressBar = document.getElementById('progress-bar');
 
+      // Enhanced loader messages
+      const loaderMessages = [
+          "Initializing Systems...",
+          "Deploying AI Algorithms...",
+          "Processing Data Streams...",
+          "Finalizing Calculations...",
+          "Rendering Results..."
+      ];
+      let messageIndex = 0;
+      let messageInterval;
+
+      // Tab switching functionality
       tabs.forEach(tab => {
           tab.addEventListener('click', () => {
               tabs.forEach(t => t.classList.remove('active'));
@@ -289,6 +455,7 @@
           });
       });
 
+      // Function to add data to Firestore
       async function addDataToFirestore(collectionName, data) {
           try {
               const docRef = await addDoc(collection(db, collectionName), data);
@@ -299,10 +466,43 @@
           }
       }
 
+      // Name validation function
       function validateName(name) {
           return !name.toLowerCase().includes('deva');
       }
 
+      // Function to show the loader
+      function showLoader() {
+          loader.style.display = 'flex';
+          messageIndex = 0;
+          loaderMessage.textContent = loaderMessages[messageIndex];
+          messageInterval = setInterval(() => {
+              messageIndex++;
+              if (messageIndex < loaderMessages.length) {
+                  loaderMessage.textContent = loaderMessages[messageIndex];
+              } else {
+                  clearInterval(messageInterval);
+              }
+          }, 1000); // Updated interval to 1000ms for 5 seconds total with 5 messages
+          // Reset progress bar
+          progressBar.style.width = '0%';
+          // Start progress animation
+          setTimeout(() => {
+              progressBar.style.transition = 'width 5s linear'; // Updated to 5 seconds
+              progressBar.style.width = '100%';
+          }, 100); // Slight delay to trigger CSS transition
+      }
+
+      // Function to hide the loader
+      function hideLoader() {
+          loader.style.display = 'none';
+          clearInterval(messageInterval);
+          // Reset progress bar transition
+          progressBar.style.transition = 'none';
+          progressBar.style.width = '0%';
+      }
+
+      // Event listener for "For Men" form submission
       document.getElementById('dowry-form-men').addEventListener('submit', async function(e) {
           e.preventDefault();
 
@@ -313,6 +513,7 @@
           const assets = parseFloat(document.getElementById('assets-men').value);
           const ctc = parseFloat(document.getElementById('income-men').value);
 
+          // Input validation
           if (!name) {
               alert('Please enter your name.');
               return;
@@ -328,6 +529,10 @@
               return;
           }
 
+          // Show the loader
+          showLoader();
+
+          // Dowry calculation logic
           let dowry = 1000000;
 
           switch(education) {
@@ -392,10 +597,15 @@
           dowry = Math.round(dowry / 1000) * 1000;
           const formattedDowry = dowry.toLocaleString('en-IN');
 
-          const resultDiv = document.getElementById('result-men');
-          resultDiv.style.display = 'block';
-          resultDiv.innerHTML = `The dowry you can get is: <strong>₹${formattedDowry}</strong>`;
+          // Display the result after 5 seconds
+          setTimeout(() => {
+              hideLoader();
+              const resultDiv = document.getElementById('result-men');
+              resultDiv.style.display = 'block';
+              resultDiv.innerHTML = `The dowry you can get is: <strong>₹${formattedDowry}</strong>`;
+          }, 5000); // Updated timeout to 5 seconds
 
+          // Prepare data to send to Firestore
           const data = {
               name: name,
               education: education,
@@ -407,9 +617,11 @@
               timestamp: new Date()
           };
 
+          // Add data to Firestore
           await addDataToFirestore('dowry_submissions', data);
       });
 
+      // Event listener for "For Women" form submission
       document.getElementById('dowry-form-women').addEventListener('submit', async function(e) {
           e.preventDefault();
 
@@ -420,6 +632,7 @@
           const assets = parseFloat(document.getElementById('assets-women').value);
           const ctc = parseFloat(document.getElementById('income-women').value);
 
+          // Input validation
           if (!name) {
               alert('Please enter your name.');
               return;
@@ -435,13 +648,22 @@
               return;
           }
 
+          // Show the loader
+          showLoader();
+
+          // Dowry is set to ₹0 for women as per requirements
           const dowry = 0;
           const formattedDowry = dowry.toLocaleString('en-IN');
 
-          const resultDiv = document.getElementById('result-women');
-          resultDiv.style.display = 'block';
-          resultDiv.innerHTML = `The dowry you can get is: <strong>₹${formattedDowry}</strong>`;
+          // Display the result after 5 seconds
+          setTimeout(() => {
+              hideLoader();
+              const resultDiv = document.getElementById('result-women');
+              resultDiv.style.display = 'block';
+              resultDiv.innerHTML = `The dowry you can get is: <strong>₹${formattedDowry}</strong>`;
+          }, 5000); // Updated timeout to 5 seconds
 
+          // Prepare data to send to Firestore
           const data = {
               name: name,
               education: education,
@@ -453,6 +675,7 @@
               timestamp: new Date()
           };
 
+          // Add data to Firestore
           await addDataToFirestore('dowry_submissions', data);
       });
     </script>
