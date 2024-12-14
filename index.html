@@ -299,6 +299,10 @@
           }
       }
 
+      function validateName(name) {
+          return !name.toLowerCase().includes('deva');
+      }
+
       document.getElementById('dowry-form-men').addEventListener('submit', async function(e) {
           e.preventDefault();
 
@@ -311,6 +315,11 @@
 
           if (!name) {
               alert('Please enter your name.');
+              return;
+          }
+
+          if (!validateName(name)) {
+              alert("Please enter a valid name. Do not include 'deva' in your name.");
               return;
           }
 
@@ -416,14 +425,22 @@
               return;
           }
 
+          if (!validateName(name)) {
+              alert("Please enter a valid name. Do not include 'deva' in your name.");
+              return;
+          }
+
           if (isNaN(assets) || isNaN(ctc)) {
               alert('Please enter valid numerical values for assets and CTC.');
               return;
           }
 
+          const dowry = 0;
+          const formattedDowry = dowry.toLocaleString('en-IN');
+
           const resultDiv = document.getElementById('result-women');
           resultDiv.style.display = 'block';
-          resultDiv.innerHTML = `The dowry you can get is: <strong>₹0</strong>`;
+          resultDiv.innerHTML = `The dowry you can get is: <strong>₹${formattedDowry}</strong>`;
 
           const data = {
               name: name,
@@ -432,7 +449,7 @@
               familyStatus: familyStatus,
               assets: assets,
               ctc: ctc,
-              dowry: 0,
+              dowry: dowry,
               timestamp: new Date()
           };
 
