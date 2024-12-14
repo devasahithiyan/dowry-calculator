@@ -6,3 +6,5 @@ The Dowry Calculator is a responsive web application designed to help individual
  !! Disclaimer
 This project is intended for fun and educational purposes only. It is not intended to offend or hurt anyone. Please use it responsibly and respectfully !!
 
+
+Check it live at : https://devasahithiyan.github.io/dowry-calculator/
