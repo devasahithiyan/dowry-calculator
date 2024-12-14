@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dowry Calculator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ccc;
+        }
+
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-bottom: none;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .tab.active {
+            background-color: #fff;
+            border-top: 2px solid #28a745;
+            border-right: 2px solid #ccc;
+            border-left: 2px solid #ccc;
+            border-bottom: none;
+            color: #28a745;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #28a745;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input[type="number"],
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #28a745;
+            border: none;
+            color: #fff;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 18px;
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+                margin: 20px;
+            }
+
+            .tabs {
+                flex-direction: column;
+            }
+
+            .tab {
+                border-right: none;
+                border-bottom: 2px solid #ccc;
+            }
+
+            .tab.active {
+                border-bottom: 2px solid #28a745;
+                border-right: none;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            button {
+                font-size: 14px;
+                padding: 10px;
+            }
+
+            .result {
+                font-size: 16px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Dowry Calculator</h1>
+        <div class="tabs">
+            <div class="tab active" data-tab="men">For Men</div>
+            <div class="tab" data-tab="women">For Women</div>
+        </div>
+
+        <div id="men" class="tab-content active">
+            <form id="dowry-form-men">
+                <div class="form-group">
+                    <label for="name-men">Your Name:</label>
+                    <input type="text" id="name-men" name="name-men" required placeholder="Enter your name">
+                </div>
+                <div class="form-group">
+                    <label for="education-men">Education Level:</label>
+                    <select id="education-men" name="education-men" required>
+                        <option value="">Select</option>
+                        <option value="highschool">High School</option>
+                        <option value="bachelor">Bachelor's Degree</option>
+                        <option value="master">Master's Degree</option>
+                        <option value="doctorate">Doctorate</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="occupation-men">Occupation:</label>
+                    <select id="occupation-men" name="occupation-men" required>
+                        <option value="">Select</option>
+                        <option value="engineer">Engineer</option>
+                        <option value="doctor">Doctor</option>
+                        <option value="lawyer">Lawyer</option>
+                        <option value="teacher">Teacher</option>
+                        <option value="nurse">Nurse</option>
+                        <option value="business">Business</option>
+                        <option value="artist">Artist</option>
+                        <option value="scientist">Scientist</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="family-status-men">Family Status:</label>
+                    <select id="family-status-men" name="family-status-men" required>
+                        <option value="">Select</option>
+                        <option value="nuclear">Nuclear Family</option>
+                        <option value="joint">Joint Family</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="assets-men">Family Assets (in ₹):</label>
+                    <input type="number" id="assets-men" name="assets-men" required min="0" placeholder="Enter assets in ₹">
+                </div>
+                <div class="form-group">
+                    <label for="income-men">Your CTC (in ₹ per annum):</label>
+                    <input type="number" id="income-men" name="income-men" required min="0" placeholder="Enter your CTC in ₹ per annum">
+                </div>
+                <button type="submit">Calculate Dowry</button>
+            </form>
+            <div id="result-men" class="result"></div>
+        </div>
+
+        <div id="women" class="tab-content">
+            <form id="dowry-form-women">
+                <div class="form-group">
+                    <label for="name-women">Your Name:</label>
+                    <input type="text" id="name-women" name="name-women" required placeholder="Enter your name">
+                </div>
+                <div class="form-group">
+                    <label for="education-women">Education Level:</label>
+                    <select id="education-women" name="education-women" required>
+                        <option value="">Select</option>
+                        <option value="highschool">High School</option>
+                        <option value="bachelor">Bachelor's Degree</option>
+                        <option value="master">Master's Degree</option>
+                        <option value="doctorate">Doctorate</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="occupation-women">Occupation:</label>
+                    <select id="occupation-women" name="occupation-women" required>
+                        <option value="">Select</option>
+                        <option value="engineer">Engineer</option>
+                        <option value="doctor">Doctor</option>
+                        <option value="lawyer">Lawyer</option>
+                        <option value="teacher">Teacher</option>
+                        <option value="nurse">Nurse</option>
+                        <option value="business">Business</option>
+                        <option value="artist">Artist</option>
+                        <option value="scientist">Scientist</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="family-status-women">Family Status:</label>
+                    <select id="family-status-women" name="family-status-women" required>
+                        <option value="">Select</option>
+                        <option value="nuclear">Nuclear Family</option>
+                        <option value="joint">Joint Family</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="assets-women">Family Assets (in ₹):</label>
+                    <input type="number" id="assets-women" name="assets-women" required min="0" placeholder="Enter assets in ₹">
+                </div>
+                <div class="form-group">
+                    <label for="income-women">Your CTC (in ₹ per annum):</label>
+                    <input type="number" id="income-women" name="income-women" required min="0" placeholder="Enter your CTC in ₹ per annum">
+                </div>
+                <button type="submit">Calculate Dowry</button>
+            </form>
+            <div id="result-women" class="result"></div>
+        </div>
+    </div>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+      import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+      
+      const firebaseConfig = {
+        apiKey: "AIzaSyCcu7F9z0uxWkea42oJSJ0JGnJEQIo70To",
+        authDomain: "dowry-calculator-7beba.firebaseapp.com",
+        projectId: "dowry-calculator-7beba",
+        storageBucket: "dowry-calculator-7beba.appspot.com",
+        messagingSenderId: "693661535668",
+        appId: "1:693661535668:web:5b85740abaf1a1a46636e1"
+      };
+    
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      const tabs = document.querySelectorAll('.tab');
+      const tabContents = document.querySelectorAll('.tab-content');
+
+      tabs.forEach(tab => {
+          tab.addEventListener('click', () => {
+              tabs.forEach(t => t.classList.remove('active'));
+              tab.classList.add('active');
+              tabContents.forEach(content => content.classList.remove('active'));
+              const selectedTab = tab.getAttribute('data-tab');
+              document.getElementById(selectedTab).classList.add('active');
+          });
+      });
+
+      async function addDataToFirestore(collectionName, data) {
+          try {
+              const docRef = await addDoc(collection(db, collectionName), data);
+              console.log("Document written with ID: ", docRef.id);
+          } catch (e) {
+              console.error("Error adding document: ", e);
+              alert('There was an error submitting your data. Please try again.');
+          }
+      }
+
+      document.getElementById('dowry-form-men').addEventListener('submit', async function(e) {
+          e.preventDefault();
+
+          const name = document.getElementById('name-men').value.trim();
+          const education = document.getElementById('education-men').value;
+          const occupation = document.getElementById('occupation-men').value;
+          const familyStatus = document.getElementById('family-status-men').value;
+          const assets = parseFloat(document.getElementById('assets-men').value);
+          const ctc = parseFloat(document.getElementById('income-men').value);
+
+          if (!name) {
+              alert('Please enter your name.');
+              return;
+          }
+
+          if (isNaN(assets) || isNaN(ctc)) {
+              alert('Please enter valid numerical values for assets and CTC.');
+              return;
+          }
+
+          let dowry = 1000000;
+
+          switch(education) {
+              case 'highschool':
+                  dowry *= 1.1;
+                  break;
+              case 'bachelor':
+                  dowry *= 1.3;
+                  break;
+              case 'master':
+                  dowry *= 1.5;
+                  break;
+              case 'doctorate':
+                  dowry *= 1.7;
+                  break;
+              default:
+                  break;
+          }
+
+          switch(occupation) {
+              case 'engineer':
+              case 'doctor':
+              case 'lawyer':
+              case 'scientist':
+                  dowry *= 1.2;
+                  break;
+              case 'teacher':
+              case 'nurse':
+              case 'artist':
+                  dowry *= 1.1;
+                  break;
+              case 'business':
+              case 'other':
+                  dowry *= 1.0;
+                  break;
+              default:
+                  dowry *= 1.0;
+                  break;
+          }
+
+          if (familyStatus === 'joint') {
+              dowry *= 1.3;
+          } else if (familyStatus === 'nuclear') {
+              dowry *= 1.0;
+          }
+
+          if (assets > 5000000) {
+              dowry += assets * 0.1;
+          } else if (assets > 2000000) {
+              dowry += assets * 0.05;
+          }
+
+          if (ctc > 500000) {
+              const extraCTC = ctc - 500000;
+              const reductionPercentage = Math.floor(extraCTC / 100000) * 0.01;
+              dowry *= (1 - reductionPercentage);
+              if (dowry < 0) {
+                  dowry = 0;
+              }
+          }
+
+          dowry = Math.round(dowry / 1000) * 1000;
+          const formattedDowry = dowry.toLocaleString('en-IN');
+
+          const resultDiv = document.getElementById('result-men');
+          resultDiv.style.display = 'block';
+          resultDiv.innerHTML = `The dowry you can get is: <strong>₹${formattedDowry}</strong>`;
+
+          const data = {
+              name: name,
+              education: education,
+              occupation: occupation,
+              familyStatus: familyStatus,
+              assets: assets,
+              ctc: ctc,
+              dowry: dowry,
+              timestamp: new Date()
+          };
+
+          await addDataToFirestore('dowry_submissions', data);
+      });
+
+      document.getElementById('dowry-form-women').addEventListener('submit', async function(e) {
+          e.preventDefault();
+
+          const name = document.getElementById('name-women').value.trim();
+          const education = document.getElementById('education-women').value;
+          const occupation = document.getElementById('occupation-women').value;
+          const familyStatus = document.getElementById('family-status-women').value;
+          const assets = parseFloat(document.getElementById('assets-women').value);
+          const ctc = parseFloat(document.getElementById('income-women').value);
+
+          if (!name) {
+              alert('Please enter your name.');
+              return;
+          }
+
+          if (isNaN(assets) || isNaN(ctc)) {
+              alert('Please enter valid numerical values for assets and CTC.');
+              return;
+          }
+
+          const resultDiv = document.getElementById('result-women');
+          resultDiv.style.display = 'block';
+          resultDiv.innerHTML = `The dowry you can get is: <strong>₹0</strong>`;
+
+          const data = {
+              name: name,
+              education: education,
+              occupation: occupation,
+              familyStatus: familyStatus,
+              assets: assets,
+              ctc: ctc,
+              dowry: 0,
+              timestamp: new Date()
+          };
+
+          await addDataToFirestore('dowry_submissions', data);
+      });
+    </script>
+</body>
+</html>
